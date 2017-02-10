@@ -1,0 +1,5 @@
+cat carla.json | jq '{"_id": "carla", "value": .}'
+
+for fn in *.json; do id=`basename "$fn" .json`; echo $id; cat "$fn" | jq --arg id $id '{"_id": $id, "value": .}' > with_id_"$id".json; done
+
+for fn in with_id*.json; do kanso upload "$fn" http://couchdb:5984/preferences; done

@@ -1,0 +1,17 @@
+version: '2'
+services:
+  couchdb:
+    image: klaemo/couchdb
+  prefserver:
+    image: gpiilab/preferences-server
+    ports:
+      - 8081:8081
+    links:
+      - couchdb
+  dataloader:
+    image: gpiilab/dataloader
+    links:
+      - couchdb
+    depends_on:
+      - couchdb
+      - prefserver
