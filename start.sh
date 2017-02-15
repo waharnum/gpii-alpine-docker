@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# clean up
+# clean up any previous deployment
 kubectl delete deployment gpii-deployment
 kubectl delete service gpii-service-couchdb
 kubectl delete service gpii-service-preferences-server
@@ -17,21 +17,28 @@ docker build -t gpiilab/preferences-server prefserver/.
 docker build -t gpiilab/flow-manager flowmanager/.
 docker build -t gpiilab/dataloader dataloader/.
 
-# create the deployment and service
+# create the deployment
 
 kubectl create -f gpii-deployment.yaml
+
+# create the services
 kubectl create -f gpii-service-preferences-server.json
 kubectl create -f gpii-service-couchdb.json
 kubectl create -f gpii-service-flow-manager.json
 
-echo "Waiting for service endpoints to become available..."
+# record the host-available URLs for the services
+echo "Getting host-available service URLs"
 couchDBAddress=$(minikube service gpii-service-couchdb --url)
 preferencesServerAddress=$(minikube service gpii-service-preferences-server --url)
 flowManagerAddress=$(minikube service gpii-service-flow-manager --url)
 
-echo "CouchDB available from host at $couchDBAddress"
-echo "Preferences Server available from host at $preferencesServerAddress"
-echo "Flow Manager available from host at $flowManagerAddress"
+reportServices() {
+    echo "CouchDB available from host at $couchDBAddress"
+    echo "Preferences Server available from host at $preferencesServerAddress"
+    echo "Flow Manager available from host at $flowManagerAddress"
+}
+
+reportServices
 
 echo "Launching dataloader job"
 kubectl create -f gpii-job-dataloader.yaml
@@ -52,6 +59,4 @@ echo "Getting (via curl) carla test user's org.gnome.desktop.a11y.magnifier pref
 curl -g $(minikube service gpii-service-flow-manager --url)/carla/settings/%7B%22OS%22:%7B%22id%22:%22linux%22%7D,%22solutions%22:[%7B%22id%22:%22org.gnome.desktop.a11y.magnifier%22%7D]%7D
 echo
 
-echo "CouchDB available from host at $couchDBAddress"
-echo "Preferences Server available from host at $preferencesServerAddress"
-echo "Flow Manager available from host at $flowManagerAddress"
+reportServices
