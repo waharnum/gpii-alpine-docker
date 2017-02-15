@@ -24,14 +24,19 @@ kubectl create -f gpii-service-preferences-server.json
 kubectl create -f gpii-service-couchdb.json
 kubectl create -f gpii-service-flow-manager.json
 
+echo "Waiting for service endpoints to become available..."
 couchDBAddress=$(minikube service gpii-service-couchdb --url)
 preferencesServerAddress=$(minikube service gpii-service-preferences-server --url)
 flowManagerAddress=$(minikube service gpii-service-flow-manager --url)
 
+echo "CouchDB available from host at $couchDBAddress"
+echo "Preferences Server available from host at $preferencesServerAddress"
+echo "Flow Manager available from host at $flowManagerAddress"
+
 echo "Launching dataloader job"
 kubectl create -f gpii-job-dataloader.yaml
 
-# Show the job log
+# Show the dataloader job log
 sleep 5
 dataloaderPod=$(kubectl get pods --selector=job-name=dataloader --output=jsonpath={.items..metadata.name})
 kubectl logs $dataloaderPod -f
@@ -47,10 +52,6 @@ echo "Getting (via curl) carla test user's org.gnome.desktop.a11y.magnifier pref
 curl -g $(minikube service gpii-service-flow-manager --url)/carla/settings/%7B%22OS%22:%7B%22id%22:%22linux%22%7D,%22solutions%22:[%7B%22id%22:%22org.gnome.desktop.a11y.magnifier%22%7D]%7D
 echo
 
-echo "CouchDB available at: $couchDBAddress"
-
-echo "Preferences Server available at:"
-echo $preferencesServerAddress
-
-echo "Flow Manager available at:"
-echo $flowManagerAddress
+echo "CouchDB available from host at $couchDBAddress"
+echo "Preferences Server available from host at $preferencesServerAddress"
+echo "Flow Manager available from host at $flowManagerAddress"
