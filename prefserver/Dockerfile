@@ -1,5 +1,5 @@
 FROM gpiilab/universal
-ENV NODE_ENV gpii.preferencesServer.config.production
+ENV NODE_ENV gpii.config.preferencesServer.standalone.production
 EXPOSE 8081
 WORKDIR /app
-CMD NODE_ENV=$NODE_ENV node node_modules/kettle/init.js gpii/node_modules/preferencesServer/configs
+CMD NODE_ENV=$NODE_ENV node gpii.js

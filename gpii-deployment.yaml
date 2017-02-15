@@ -21,6 +21,8 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8081
-      # - name: dataloader
-      #   image: gpiilab/dataloader
-      #   imagePullPolicy: IfNotPresent
+      - name: flow-manager
+        image: gpiilab/flow-manager
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8082
