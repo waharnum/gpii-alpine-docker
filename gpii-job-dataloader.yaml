@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dataloader
+spec:
+  template:
+    metadata:
+      name: dataloader
+    spec:
+      containers:
+      - name: dataloader
+        image: gpiilab/dataloader
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: COUCHDB_ADDRESS
+            value: gpii-service-couchdb:5984
+      restartPolicy: Never

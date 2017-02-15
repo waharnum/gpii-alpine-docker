@@ -1,0 +1,21 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "gpii-service-preferences-server"
+    },
+    "spec": {
+        "type": "NodePort",
+        "selector": {
+            "app": "gpii"
+        },
+        "ports": [
+            {
+                "name": "preferences-server",
+                "protocol": "TCP",
+                "port": 8081,
+                "targetPort": 8081
+            }
+        ]
+    }
+}

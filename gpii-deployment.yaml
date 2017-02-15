@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gpii-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gpii
+    spec:
+
+      containers:
+      - name: couchdb
+        image: klaemo/couchdb
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5984
+      - name: preferences-server
+        image: gpiilab/preferences-server
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+      # - name: dataloader
+      #   image: gpiilab/dataloader
+      #   imagePullPolicy: IfNotPresent
