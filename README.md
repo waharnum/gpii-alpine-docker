@@ -3,18 +3,16 @@ Towards a simpler vision of the GPII containers!
 # Trying It Out
 
 ## Requirements
-* Current Docker (including docker-compose)
+* Minikube
+* Docker (for the Docker client)
 
-## Starting It
+**Note**: the `start.sh` script will reconfigure Docker in the current shell prompt to use Minikube's Docker daemon as described at https://github.com/kubernetes/minikube#reusing-the-docker-daemon
+
+## Runninng it
 
 From project root
 ```
-./buildContainers.sh
-docker-compose up
+./start.sh
 ```
-
-## Shutting It Down
-
-`docker-compose down`
 
 # Comments
