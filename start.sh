@@ -56,6 +56,7 @@ curl $(minikube service gpii-service-preferences-server --url)/preferences/carla
 echo
 
 echo "Getting (via curl) carla test user's org.gnome.desktop.a11y.magnifier preference from Flow Manager"
+# curl tries to glob the square brackets unless the -g flag is set
 curl -g $(minikube service gpii-service-flow-manager --url)/carla/settings/%7B%22OS%22:%7B%22id%22:%22linux%22%7D,%22solutions%22:[%7B%22id%22:%22org.gnome.desktop.a11y.magnifier%22%7D]%7D
 echo
 
