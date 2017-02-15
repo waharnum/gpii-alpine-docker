@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # clean up
 kubectl delete deployment gpii-deployment
 kubectl delete service gpii-service-preferences-server
@@ -28,8 +30,14 @@ echo $(minikube service gpii-service-couchdb --url)
 echo "Launching dataloader job"
 kubectl create -f gpii-job-dataloader.yaml
 
-echo "Giving dataloader time to complete..."
+# Show the job log
+sleep 5
+dataloaderPod=$(kubectl get pods --selector=job-name=dataloader --output=jsonpath={.items..metadata.name})
+kubectl logs $dataloaderPod -f
+
+echo "Giving dataloader job time to complete... (crude, I know)"
 sleep 30
 
 echo "CURLIing Carla"
 curl $(minikube service gpii-service-preferences-server --url)/preferences/carla
+echo
